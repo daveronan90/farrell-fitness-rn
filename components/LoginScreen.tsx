@@ -1,11 +1,10 @@
 import { useState } from "react";
 import {
-  Platform,
   Pressable,
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  View,
+  View
 } from "react-native";
 import { Text } from "react-native-paper";
 import Dots from "../assets/Dots.svg";
@@ -73,13 +72,13 @@ const LoginScreen = () => {
         setVisibility={setVisibility}
         formType={formType}
       />
+      <StatusBar />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     position: "relative",
     flex: 1,
     backgroundColor: theme.colors.secondary,

@@ -2,18 +2,17 @@ import { useIsFocused } from "@react-navigation/native";
 import { PostgrestResponse, Session } from "@supabase/supabase-js";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  View,
+  View
 } from "react-native";
 import { Avatar, Button, Text } from "react-native-paper";
 import Dots from "../assets/Dots.svg";
 import { supabase } from "../supabase";
 import theme from "../theme";
 import EventsList from "./EventsList";
-import { IAttending, IEvent } from "./EventsScreen";
+import { IEvent } from "./EventsScreen";
 
 export interface IUser {
   username: string;
@@ -128,13 +127,13 @@ const UserScreen = ({ session }: IUserScreenProps) => {
         booked={true}
         session={session}
       />
+      <StatusBar />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     backgroundColor: theme.colors.secondary,
     height: "100%",
     paddingVertical: 48,

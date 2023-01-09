@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  View
+  View,
 } from "react-native";
 import { Text } from "react-native-paper";
 import Dots from "../assets/Dots.svg";
@@ -172,13 +172,13 @@ const EventsScreen = ({ session }: IEventsScreenProps) => {
         booked={false}
         session={session}
       />
+      <StatusBar />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     backgroundColor: theme.colors.secondary,
     height: "100%",
     paddingVertical: 48,
