@@ -1,7 +1,13 @@
 import { useIsFocused } from "@react-navigation/native";
 import { PostgrestResponse, Session } from "@supabase/supabase-js";
 import { useQuery } from "@tanstack/react-query";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  View
+} from "react-native";
 import { Avatar, Button, Text } from "react-native-paper";
 import Dots from "../assets/Dots.svg";
 import { supabase } from "../supabase";
@@ -80,7 +86,7 @@ const UserScreen = ({ session }: IUserScreenProps) => {
       <View style={styles.dots_top}>
         <Dots />
       </View>
-      <View style={styles.profile_container}>
+      <View style={styles.avatar_container}>
         <Avatar.Image size={80} source={require(`../assets/avatar.webp`)} />
         <View style={styles.notification_container}>
           <Text variant="labelSmall" style={styles.notification_text}>
@@ -100,11 +106,11 @@ const UserScreen = ({ session }: IUserScreenProps) => {
         onPress={() => {
           supabase.auth.signOut();
         }}
-        style={styles.logout_button}
+        style={{ marginBottom: 24 }}
       >
         Log out
       </Button>
-      <Text variant="headlineMedium" style={styles.booked_title}>
+      <Text variant="headlineMedium" style={styles.booked_header}>
         Booked Classes
       </Text>
       <EventsList
@@ -131,9 +137,11 @@ const UserScreen = ({ session }: IUserScreenProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    color: theme.colors.tertiary,
-    width: "70%",
-    marginTop: 8,
+    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: theme.colors.secondary,
+    height: "100%",
+    paddingVertical: 48,
+    alignItems: "center",
   },
   dots_bottom: { position: "absolute", bottom: 0, left: 0 },
   dots_top: {
@@ -142,7 +150,7 @@ const styles = StyleSheet.create({
     right: 0,
     transform: [{ rotateY: "180deg" }, { rotateX: "180deg" }],
   },
-  profile_container: { position: "relative" },
+  avatar_container: { position: "relative" },
   notification_container: {
     position: "absolute",
     backgroundColor: theme.colors.info,
@@ -155,8 +163,7 @@ const styles = StyleSheet.create({
   notification_text: { color: theme.colors.tertiary, fontWeight: "bold" },
   fullname_text: { color: theme.colors.tertiary, fontWeight: "bold" },
   email_text: { color: "gray" },
-  logout_button: { marginBottom: 24 },
-  booked_title: {
+  booked_header: {
     backgroundColor: theme.colors.primary,
     color: theme.colors.tertiary,
     width: "100%",

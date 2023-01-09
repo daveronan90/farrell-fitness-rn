@@ -122,6 +122,7 @@ const EventsScreen = ({ session }: IEventsScreenProps) => {
                             ? "bold"
                             : undefined,
                       },
+                      ,
                       styles.date_text,
                     ]}
                   >
@@ -191,10 +192,13 @@ const styles = StyleSheet.create({
     transform: [{ rotateY: "180deg" }, { rotateX: "180deg" }],
   },
   dates_container: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    transform: [{ rotateY: "180deg" }, { rotateX: "180deg" }],
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 24,
+    paddingHorizontal: 24,
   },
   date_button: {
     display: "flex",
@@ -203,9 +207,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
   },
-  date_text: {
-    color: theme.colors.tertiary,
-  },
+  date_text: { color: theme.colors.tertiary },
 });
 
 export default EventsScreen;

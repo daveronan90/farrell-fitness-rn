@@ -62,7 +62,7 @@ const SignUpForm = ({ setVisibility }: ISignUpForm) => {
         onChangeText={(text) => setPassword(text)}
         mode="outlined"
         label="Password"
-        style={styles.input}
+        style={[{ marginBottom: 24 }, styles.input]}
       />
       <Button mode="outlined" uppercase onPress={() => signUp()}>
         Register
