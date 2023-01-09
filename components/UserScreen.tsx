@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  View
+  View,
 } from "react-native";
 import { Avatar, Button, Text } from "react-native-paper";
 import Dots from "../assets/Dots.svg";
@@ -57,10 +57,7 @@ const UserScreen = ({ session }: IUserScreenProps) => {
       const filteredArray = [...data].filter(
         (event) =>
           parseInt(event.startTimestamp.substring(8, 10)) >=
-            new Date().getDate() &&
-          event.attendances.findIndex(
-            (userEvent: IAttending) => userEvent.user_id === session.user.id
-          ) !== -1
+          new Date().getDate()
       );
       return [...filteredArray];
     }

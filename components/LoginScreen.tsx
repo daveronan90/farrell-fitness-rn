@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  View
+  View,
 } from "react-native";
 import { Text } from "react-native-paper";
 import Dots from "../assets/Dots.svg";
@@ -41,7 +41,13 @@ const LoginScreen = () => {
             styles.button_container,
           ]}
         >
-          <Pressable style={styles.button} onPress={() => setVisibility(true)}>
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              setFormType("login");
+              setVisibility(true);
+            }}
+          >
             <Text style={styles.button_text}>Login</Text>
           </Pressable>
         </View>
@@ -104,7 +110,6 @@ const styles = StyleSheet.create({
     color: theme.colors.tertiary,
     fontWeight: "bold",
     fontSize: 24,
-    fontStyle: "italic",
     padding: 2,
   },
 });
