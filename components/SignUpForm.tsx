@@ -1,72 +1,146 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthResponse } from "@supabase/supabase-js";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, StyleSheet } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, Text, TextInput } from "react-native-paper";
+import * as yup from "yup";
 import { supabase } from "../supabase";
 import theme from "../theme";
 
-interface ISignUpForm {
+const schema = yup.object({
+  fullName: yup.string().required(),
+  userName: yup.string().required(),
+  email: yup.string().email(),
+  password: yup.string().required(),
+});
+
+interface ISignUpFormProps {
   setVisibility: Dispatch<SetStateAction<boolean>>;
 }
 
-const SignUpForm = ({ setVisibility }: ISignUpForm) => {
-  const [fName, setFName] = useState("");
-  const [uName, setUName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface IFormInputs {
+  fullName: string;
+  userName: string;
+  email: string;
+  password: string;
+}
 
-  const signUp = async () => {
+const SignUpForm = ({ setVisibility }: ISignUpFormProps) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInputs>({
+    defaultValues: {
+      email: "",
+      password: "",
+      userName: "",
+      fullName: "",
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit: SubmitHandler<IFormInputs> = async ({
+    email,
+    password,
+    fullName,
+    userName,
+  }) => {
     const { error }: AuthResponse = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: {
-          username: uName,
-          full_name: fName,
-        },
-      },
+      options: { data: { full_name: fullName, username: userName } },
     });
     if (error) {
-      Alert.alert(error.message);
+      return Alert.alert(error.message);
     } else {
-      Alert.alert("Sign up successful, Welcome!\nYou can now login!");
       setVisibility(false);
+      Alert.alert(
+        "Welcome to Farrell Fitness",
+        "Thanks for Registering,\nPlease verify your email and you can login!"
+      );
     }
   };
+
   return (
     <>
-      <TextInput
-        value={fName}
-        onChangeText={(text) => setFName(text)}
-        mode="outlined"
-        label="Full Name"
-        style={styles.input}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            mode="outlined"
+            label="Full Name"
+            style={styles.input}
+          />
+        )}
+        name="fullName"
       />
-      <TextInput
-        value={uName}
-        onChangeText={(text) => setUName(text)}
-        mode="outlined"
-        label="Username"
-        style={styles.input}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            mode="outlined"
+            label="Username"
+            style={styles.input}
+          />
+        )}
+        name="userName"
       />
-      <TextInput
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        mode="outlined"
-        label="Email"
-        style={styles.input}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            mode="outlined"
+            label="Email"
+            style={styles.input}
+          />
+        )}
+        name="email"
       />
-      <TextInput
-        value={password}
-        secureTextEntry
-        onChangeText={(text) => setPassword(text)}
-        mode="outlined"
-        label="Password"
-        style={[{ marginBottom: 24 }, styles.input]}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            mode="outlined"
+            label="password"
+            style={[{ marginBottom: 24 }, styles.input]}
+            secureTextEntry
+          />
+        )}
+        name="password"
       />
-      <Button mode="outlined" uppercase onPress={() => signUp()}>
+      <Button mode="outlined" onPress={handleSubmit(onSubmit)}>
         Register
       </Button>
+      {errors.userName && <Text>Username is required</Text>}
+      {errors.fullName && <Text>Full Name is required</Text>}
+      {errors.email && <Text>Email is incorrect or missing</Text>}
+      {errors.password && <Text>Password is required</Text>}
     </>
   );
 };
